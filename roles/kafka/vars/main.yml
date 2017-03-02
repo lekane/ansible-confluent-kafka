@@ -1,0 +1,2 @@
+confluent_platform_version: 3.1.2-1
+kafka_config_dir: /etc/kafka

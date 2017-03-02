@@ -1,0 +1,8 @@
+---
+- name: Kafka base installation
+  hosts: kafka
+  become: yes
+  environment: "{{ proxy_env }}"
+  serial: 1
+  roles:
+    - kafka

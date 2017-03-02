@@ -1,0 +1,44 @@
+---
+- name: Create Kafka group
+  group: name=kafka state=present
+
+- name: Create Kafka user
+  user: name=kafka shell=/bin/bash home=/home/kafka group=kafka
+
+- name: Backup original server.properties
+  command: "cp {{ kafka_config_dir }}/server.properties {{ kafka_config_dir }}/server.properties.{{ confluent_platform_version }} creates={{ kafka_config_dir }}/server.properties.{{ confluent_platform_version }}"
+
+- name: Template kafka server.properties
+  template: src=server.j2 dest=/etc/kafka/server.properties owner=kafka group=kafka mode=0664
+
+- name: Create /var/lib/kafka directory
+  file: path=/var/lib/kafka state=directory owner=kafka group=kafka mode=0775
+
+- name: Kafka broker config ownership check
+  file: "path=/etc/{{ item }} state=directory owner=kafka group=kafka recurse=yes mode=0774"
+  with_items:
+    - kafka
+    - kafka-connect-elasticsearch
+    - kafka-connect-hdfs
+    - kafka-connect-jdbc
+    - kafka-rest
+
+- name: Kafka logs ownership check
+  file: path=/var/log/kafka state=directory owner=kafka group=kafka mode=0664
+
+- name: Copy Kafka broker systemd service config
+  copy: src=kafka.service dest=/lib/systemd/system/kafka.service owner=root group=root mode=0644
+
+- name: Set Kafka broker to autostart via systemd
+  systemd:
+    name: kafka
+    enabled: yes
+    masked: no
+
+- name: Restart Kafka
+  systemd:
+    name: kafka
+    state: restarted
+
+- name: Wait for Kafka broker startup 
+  wait_for: path=/var/log/syslog search_regex="started \(kafka.server.KafkaServer\)" timeout=300
