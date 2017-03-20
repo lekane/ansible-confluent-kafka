@@ -6,7 +6,7 @@
   user: name=kafka shell=/bin/bash home=/home/kafka group=kafka
 
 - name: Backup original server.properties
-  command: "cp {{ kafka_config_dir }}/server.properties {{ kafka_config_dir }}/server.properties.{{ confluent_platform_version }} creates={{ kafka_config_dir }}/server.properties.{{ confluent_platform_version }}"
+  command: "cp {{ kafka_config_dir }}/server.properties {{ kafka_config_dir }}/server.properties.{{ confluent_platform_package_version }} creates={{ kafka_config_dir }}/server.properties.{{ confluent_platform_package_version }}"
 
 - name: Template kafka server.properties
   template: src=server.j2 dest=/etc/kafka/server.properties owner=kafka group=kafka mode=0664
