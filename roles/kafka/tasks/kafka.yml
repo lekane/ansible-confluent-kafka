@@ -13,6 +13,15 @@
 
 - name: Create /var/lib/kafka directory
   file: path=/var/lib/kafka state=directory owner=kafka group=kafka mode=0775
+  when: "{{ use_storage_symlink | default(true) }} == false"
+
+- name: Create alternate storage directory
+  file: "path={{ alternate_storage_dir }} state=directory owner=kafka group=kafka mode=0775"
+  when: "{{ use_storage_symlink | default(false) }} == true"
+
+- name: Create /var/lib/kafka to /ephmemeral/kafka symlink
+  file: "src={{ alternate_storage_dir }} dest=/var/lib/kafka state=link"
+  when: "{{ use_storage_symlink | default(false) }} == true"
 
 - name: Kafka broker config ownership check
   file: "path=/etc/{{ item }} state=directory owner=kafka group=kafka recurse=yes mode=0774"
