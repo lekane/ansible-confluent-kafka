@@ -5,6 +5,12 @@
 - name: Create Kafka user
   user: name=kafka shell=/bin/bash home=/home/kafka group=kafka
 
+- name: Create kafka utils directory
+  file: path={{ kafka_utils_dir }} state=directory owner=kafka group=kafka mode=0660
+
+- name: Template cluster_type.yaml to contain cluster info
+  template: src=cluster_type.j2 dest={{ kafka_utils_dir }}/cluster_type.yaml owner=kafka group=kafka mode=0660
+
 - name: Backup original server.properties
   command: "cp {{ kafka_config_dir }}/server.properties {{ kafka_config_dir }}/server.properties.{{ confluent_platform_package_version }} creates={{ kafka_config_dir }}/server.properties.{{ confluent_platform_package_version }}"
 

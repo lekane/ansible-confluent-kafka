@@ -1,3 +1,4 @@
 confluent_platform_repo_version: 3.3
 confluent_platform_package_version: 3.3.0-1
 kafka_config_dir: /etc/kafka
+kafka_utils_dir: ~/.kafka_discovery

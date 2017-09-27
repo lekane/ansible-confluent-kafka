@@ -16,10 +16,39 @@
   shell: "echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections"
 
 - name: Update APT cache
-  apt: update_cache=true
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 3600
 
 - name: Install Oracle Java
   apt: name=oracle-java8-installer state=latest
 
 - name: Install Confluent platform
   apt: "name=confluent-platform-oss-2.11={{ confluent_platform_package_version }} state=present"
+
+- name: Install packages for pip
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - build-essential
+  - libssl-dev
+  - libffi-dev
+  - python-dev
+  - python-crypto
+
+- name: get pip installer
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /root
+
+- name: Install pip
+  shell: python get-pip.py
+
+- pip:
+    name: pyopenssl
+    version: 16.2.0
+
+- pip:
+    name: kafka-utils

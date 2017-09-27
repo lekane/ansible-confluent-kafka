@@ -1,0 +1,10 @@
+clusters:
+  cluster-1:
+    broker_list:
+{% for node in groups['kafka']  %}
+      - "{{ hostvars[node].inventory_hostname }}:9092"
+{% endfor %}
+    zookeeper: "{{ zookeeper_servers }}/kafka"
+local_config:
+  cluster: cluster-1
+
