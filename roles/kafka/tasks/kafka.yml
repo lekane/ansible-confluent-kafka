@@ -39,7 +39,7 @@
     - kafka-rest
 
 - name: Kafka logs ownership check
-  file: path=/var/log/kafka state=directory owner=kafka group=kafka mode=0664
+  file: path=/var/log/kafka state=directory owner=kafka group=kafka mode=0775
 
 - name: Copy Kafka broker systemd service config
   copy: src=kafka.service dest=/lib/systemd/system/kafka.service owner=root group=root mode=0644
