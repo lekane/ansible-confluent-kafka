@@ -44,7 +44,7 @@
     dest: /root
 
 - name: Install pip
-  shell: python get-pip.py
+  shell: python /root/get-pip.py
 
 - pip:
     name: pyopenssl
@@ -52,3 +52,6 @@
 
 - pip:
     name: kafka-utils
+
+- name: Install kafkacat
+  apt: name=kafkacat state=latest
