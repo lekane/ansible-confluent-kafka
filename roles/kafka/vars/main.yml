@@ -1,4 +1,7 @@
-confluent_platform_repo_version: 3.3
-confluent_platform_package_version: 3.3.0-1
+confluent_platform_repo_version: 5.2
+confluent_platform_package_version: 5.2.1-1
+scala_version: 2.12
+openjdk_java_version: 8
 kafka_config_dir: /etc/kafka
 kafka_utils_dir: ~/.kafka_discovery
+proxy_env:

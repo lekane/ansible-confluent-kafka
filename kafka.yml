@@ -2,7 +2,13 @@
 - name: Kafka base installation
   hosts: kafka
   become: yes
+  gather_facts: no
   environment: "{{ proxy_env }}"
   serial: 1
+
+  pre_tasks:
+    - name: 'Install Python'
+      raw: 'sudo apt -y install python'
+
   roles:
     - kafka

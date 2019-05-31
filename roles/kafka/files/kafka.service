@@ -1,6 +1,6 @@
 [Unit]
-Description=Apache Kafka server (broker)
-Documentation=http://kafka.apache.org/documentation.html
+Description=Apache Kafka - broker
+Documentation=http://docs.confluent.io/
 Requires=network.target remote-fs.target
 After=network.target remote-fs.target
 
