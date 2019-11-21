@@ -1,14 +1,13 @@
 ---
 
+- name: Install Confluent public key
+  apt_key: url="http://packages.confluent.io/deb/{{ confluent_platform_repo_version }}/archive.key" state="present"
+
 - name: Install Confluent repository
   apt_repository: repo="deb [arch=amd64] http://packages.confluent.io/deb/{{ confluent_platform_repo_version }} stable main"
 
-- name: Install Confluent public key
-  apt_key: url="http://packages.confluent.io/deb/3.3/archive.key" state="present"
-
 - name: Update APT cache
   apt:
-    upgrade: yes
     update_cache: yes
     cache_valid_time: 3600
 
@@ -29,7 +28,7 @@
   - python-dev
   - python-crypto
 
-- name: get pip installer
+- name: Get pip installer
   get_url:
     url: https://bootstrap.pypa.io/get-pip.py
     dest: /root
@@ -37,11 +36,13 @@
 - name: Install pip
   shell: python /root/get-pip.py
 
-- pip:
+- name: Install pyopenssl
+  pip:
     name: pyopenssl
     version: 16.2.0
 
-- pip:
+- name: Install kafka-utils
+  pip:
     name: kafka-utils
 
 - name: Install kafkacat
